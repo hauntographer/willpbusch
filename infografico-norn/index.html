@@ -9,24 +9,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Professional Blue & Grey -->
+    <!-- Chosen Palette: Gothic/Cyberpunk (Dark, Violet Accent) -->
     <!-- Application Structure Plan: A top-to-bottom narrative scroll. It begins with a hook (The Problem), presents evidence (The Data), explains the systemic cause (The Cycle of Stagnation), provides context (Comparative Analysis), and concludes with actionable steps (The Solutions). This linear storytelling approach is most effective for an infographic meant to persuade and inform, guiding the user through a logical argument from diagnosis to resolution. -->
     <!-- Visualization & Content Choices: 1. Lore vs. Gameplay (Report Section 1 & 2) -> Goal: Compare -> Viz: Two-column HTML/CSS card layout with Unicode icons -> Justification: Directly visualizes the core ludonarrative dissonance for immediate impact. 2. Player Engagement Data (Report Section 3) -> Goal: Inform/Compare -> Viz: Horizontal Bar Chart (Chart.js) -> Justification: Clearly ranks racial popularity to empirically support the engagement problem claim. 3. Stagnation Cycle (Report Section 4) -> Goal: Organize/Change -> Viz: HTML/CSS flowchart -> Justification: Simplifies the complex concept of the "temporal problem" into an easy-to-understand cyclical diagram. 4. Norn vs. Nord Comparison (Report Section 5) -> Goal: Compare -> Viz: Two-column HTML/CSS card layout -> Justification: Distills the key difference (internal vs. external conflict) into a direct comparison. 5. Solutions (Report Section 6 & 7) -> Goal: Organize -> Viz: HTML/CSS icon grid -> Justification: Presents the recommendations in a scannable, visually organized format. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa; /* Light Grey */
-            color: #212529; /* Dark Grey */
+            background-color: #0a0a0a; /* Gothic Black */
+            color: #cccccc; /* Minimalist Light Grey */
             /* Desativa a seleção de texto */
             -webkit-user-select: none; /* Safari */
             -ms-user-select: none; /* IE 10+ */
             user-select: none; /* Sintaxe Padrão */
         }
-        .text-primary { color: #0056b3; }
-        .bg-primary-dark { background-color: #2c3e50; }
-        .text-muted { color: #6c757d; }
-        .border-primary { border-color: #007bff; }
+        .text-accent { color: #8A2BE2; } /* Cyberpunk Violet */
+        .border-accent { border-color: #8A2BE2; }
+        .bg-card { background-color: #1a1a1a; }
+        .text-problem { color: #CD5C5C; } /* Muted Red for problems */
+        .border-problem { border-color: #CD5C5C; }
         .chart-container {
             position: relative;
             width: 100%;
@@ -44,7 +45,7 @@
         .flow-arrow::after {
             content: '▼';
             font-size: 2rem;
-            color: #6c757d;
+            color: #444444;
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
         }
@@ -55,112 +56,112 @@
     <main class="container mx-auto p-4 md:p-8">
 
         <header class="text-center my-12 md:my-20">
-            <h1 class="text-5xl md:text-7xl font-black uppercase text-gray-800">O Fim da Lenda?</h1>
-            <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto text-muted">Um infográfico que analisa o estereótipo narrativo, o desengajamento dos jogadores e a estagnação cultural dos Norn em <span class="font-bold text-primary">Guild Wars 2</span>.</p>
+            <h1 class="text-5xl md:text-7xl font-black uppercase text-white">O Fim da Lenda?</h1>
+            <p class="mt-4 text-xl md:text-2xl max-w-3xl mx-auto text-gray-400">Um infográfico que analisa o estereótipo narrativo, o desengajamento dos jogadores e a estagnação cultural dos Norn em <span class="font-bold text-accent">Guild Wars 2</span>.</p>
         </header>
 
         <section id="problem" class="my-16 md:my-24">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">O Conflito Central: Lore Rico vs. Gameplay Simples</h2>
-            <p class="text-center max-w-4xl mx-auto mb-12 text-lg text-muted">A cultura Norn é construída sobre uma base profunda e cheia de nuances no lore. No entanto, a experiência de jogo real do jogador geralmente reforça um estereótipo unidimensional de "bárbaro bêbado". Essa desconexão é a raiz do problema.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">O Conflito Central: Lore Rico vs. Gameplay Simples</h2>
+            <p class="text-center max-w-4xl mx-auto mb-12 text-lg text-gray-400">A cultura Norn é construída sobre uma base profunda e cheia de nuances no lore. No entanto, a experiência de jogo real do jogador geralmente reforça um estereótipo unidimensional de "bárbaro bêbado". Essa desconexão é a raiz do problema.</p>
             <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white p-8 rounded-lg shadow-lg border-t-4 border-primary">
-                    <h3 class="text-2xl font-bold mb-4 flex items-center"><span class="text-3xl mr-3">📖</span> O Potencial do Lore</h3>
-                    <p class="mb-4 text-gray-600">O lore estabelecido descreve uma sociedade complexa com múltiplos caminhos para a grandeza.</p>
-                    <ul class="space-y-3 list-inside text-gray-700">
-                        <li><span class="font-bold text-gray-800">Espíritos da Selva:</span> Um rico panteão xamânico (Urso 🐻, Lobo 🐺, Corvo 🦅, Leopardo das Neves 🐆) fornece uma estrutura para diversos valores além da força pura.</li>
-                        <li><span class="font-bold text-gray-800">Uma Lenda Mais Ampla:</span> Canonicamente, um Norn pode se tornar uma lenda como um grande artesão, artista ou estrategista — não apenas um guerreiro.</li>
-                        <li><span class="font-bold text-gray-800">Resilientes e Otimistas:</span> Eles veem a derrota catastrófica como um desafio, não uma tragédia, destacando sua imensa força cultural.</li>
+                <div class="bg-card p-8 rounded-lg shadow-2xl border-t-4 border-accent">
+                    <h3 class="text-2xl font-bold text-white mb-4 flex items-center"><span class="text-3xl mr-3">📖</span> O Potencial do Lore</h3>
+                    <p class="mb-4 text-gray-400">O lore estabelecido descreve uma sociedade complexa com múltiplos caminhos para a grandeza.</p>
+                    <ul class="space-y-3 list-inside text-gray-300">
+                        <li><span class="font-bold text-white">Espíritos da Selva:</span> Um rico panteão xamânico (Urso 🐻, Lobo 🐺, Corvo 🦅, Leopardo das Neves 🐆) fornece uma estrutura para diversos valores além da força pura.</li>
+                        <li><span class="font-bold text-white">Uma Lenda Mais Ampla:</span> Canonicamente, um Norn pode se tornar uma lenda como um grande artesão, artista ou estrategista — não apenas um guerreiro.</li>
+                        <li><span class="font-bold text-white">Resilientes e Otimistas:</span> Eles veem a derrota catastrófica como um desafio, não uma tragédia, destacando sua imensa força cultural.</li>
                     </ul>
                 </div>
-                <div class="bg-white p-8 rounded-lg shadow-lg border-t-4 border-red-500">
-                    <h3 class="text-2xl font-bold mb-4 flex items-center"><span class="text-3xl mr-3">🎮</span> A Realidade no Jogo</h3>
-                    <p class="mb-4 text-gray-600">A jornada do jogador o canaliza para um papel estreito e estereotipado.</p>
-                    <ul class="space-y-3 list-inside text-gray-700">
-                        <li><span class="font-bold text-red-700">A Grande Caçada:</span> A experiência introdutória enquadra imediatamente a "lenda" como exclusivamente marcial, reduzindo o panteão espiritual a uma fonte de poder de combate.</li>
-                        <li><span class="font-bold text-red-700">Missão "Apagão":</span> Um trecho obrigatório da história força o personagem do jogador a uma narrativa de ser um bêbado imprudente e cômico, removendo a agência do jogador.</li>
-                        <li><span class="font-bold text-red-700">Mecânicas Subutilizadas:</span> A fantasia racial central de metamorfose é mecanicamente fraca e narrativamente irrelevante, barateando ainda mais sua identidade.</li>
+                <div class="bg-card p-8 rounded-lg shadow-2xl border-t-4 border-problem">
+                    <h3 class="text-2xl font-bold text-white mb-4 flex items-center"><span class="text-3xl mr-3">🎮</span> A Realidade no Jogo</h3>
+                    <p class="mb-4 text-gray-400">A jornada do jogador o canaliza para um papel estreito e estereotipado.</p>
+                    <ul class="space-y-3 list-inside text-gray-300">
+                        <li><span class="font-bold text-problem">A Grande Caçada:</span> A experiência introdutória enquadra imediatamente a "lenda" como exclusivamente marcial, reduzindo o panteão espiritual a uma fonte de poder de combate.</li>
+                        <li><span class="font-bold text-problem">Missão "Apagão":</span> Um trecho obrigatório da história força o personagem do jogador a uma narrativa de ser um bêbado imprudente e cômico, removendo a agência do jogador.</li>
+                        <li><span class="font-bold text-problem">Mecânicas Subutilizadas:</span> A fantasia racial central de metamorfose é mecanicamente fraca e narrativamente irrelevante, barateando ainda mais sua identidade.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <section id="data" class="my-16 md:my-24 bg-primary-dark text-white py-16 rounded-lg shadow-xl">
+        <section id="data" class="my-16 md:my-24 bg-card text-white py-16 rounded-lg shadow-2xl">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Os Dados do Desengajamento</h2>
-            <p class="text-center max-w-4xl mx-auto mb-12 text-lg text-gray-300">Essa dissonância narrativa tem um impacto mensurável. Dados de jogadores e sentimentos mostram que os Norn são uma das raças menos jogadas, lutando para competir com as fantasias mais claras oferecidas por outras.</p>
+            <p class="text-center max-w-4xl mx-auto mb-12 text-lg text-gray-400">Essa dissonância narrativa tem um impacto mensurável. Dados de jogadores e sentimentos mostram que os Norn são uma das raças menos jogadas, lutando para competir com as fantasias mais claras oferecidas por outras.</p>
             <div class="chart-container">
                 <canvas id="racePopularityChart"></canvas>
             </div>
-            <p class="text-center mt-8 text-gray-400 text-sm italic">Baseado na descoberta do relatório de que os Norn são a segunda raça menos jogada no geral.</p>
+            <p class="text-center mt-8 text-gray-500 text-sm italic">Baseado na descoberta do relatório de que os Norn são a segunda raça menos jogada no geral.</p>
         </section>
 
         <section id="stagnation" class="my-16 md:my-24">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">O Problema Temporal: Um Ciclo de Estagnação</h2>
-            <p class="text-center max-w-4xl mx-auto mb-12 text-lg text-muted">Os traços culturais centrais dos Norn, como apresentados no jogo, criam uma sociedade resistente à mudança, à transferência de conhecimento e à ação coletiva, deixando-a sem um futuro claro.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">O Problema Temporal: Um Ciclo de Estagnação</h2>
+            <p class="text-center max-w-4xl mx-auto mb-12 text-lg text-gray-400">Os traços culturais centrais dos Norn, como apresentados no jogo, criam uma sociedade resistente à mudança, à transferência de conhecimento e à ação coletiva, deixando-a sem um futuro claro.</p>
             <div class="flex flex-col items-center text-center">
-                <div class="bg-white p-6 rounded-lg shadow-md w-full md:w-3/4 lg:w-1/2">
-                    <h4 class="font-bold text-xl text-gray-800">Hiperindividualismo</h4>
-                    <p class="text-gray-600">Ênfase em cada indivíduo forjando sua *própria* lenda do zero.</p>
+                <div class="bg-card p-6 rounded-lg shadow-xl w-full md:w-3/4 lg:w-1/2">
+                    <h4 class="font-bold text-xl text-white">Hiperindividualismo</h4>
+                    <p class="text-gray-400">Ênfase em cada indivíduo forjando sua *própria* lenda do zero.</p>
                 </div>
                 <div class="flow-arrow"></div>
-                <div class="bg-white p-6 rounded-lg shadow-md w-full md:w-3/4 lg:w-1/2">
-                    <h4 class="font-bold text-xl text-gray-800">Rejeição de Instituições</h4>
-                    <p class="text-gray-600">A falta de estruturas centralizadas impede a preservação e o acúmulo de conhecimento.</p>
+                <div class="bg-card p-6 rounded-lg shadow-xl w-full md:w-3/4 lg:w-1/2">
+                    <h4 class="font-bold text-xl text-white">Rejeição de Instituições</h4>
+                    <p class="text-gray-400">A falta de estruturas centralizadas impede a preservação e o acúmulo de conhecimento.</p>
                 </div>
                 <div class="flow-arrow"></div>
-                 <div class="bg-white p-6 rounded-lg shadow-md w-full md:w-3/4 lg:w-1/2">
-                    <h4 class="font-bold text-xl text-red-700">Ciclo Repetitivo</h4>
-                    <p class="text-gray-600">A sociedade está presa na repetição dos mesmos atos heroicos sem evolução ou progresso social.</p>
+                 <div class="bg-card p-6 rounded-lg shadow-xl w-full md:w-3/4 lg:w-1/2">
+                    <h4 class="font-bold text-xl text-problem">Ciclo Repetitivo</h4>
+                    <p class="text-gray-400">A sociedade está presa na repetição dos mesmos atos heroicos sem evolução ou progresso social.</p>
                 </div>
                  <div class="flow-arrow"></div>
-                <div class="bg-red-100 border-2 border-red-500 p-6 rounded-lg shadow-md w-full md:w-3/4 lg:w-1/2">
-                    <h4 class="font-bold text-xl text-red-700">Estagnação Cultural</h4>
-                    <p class="text-gray-700">A cultura não tem um caminho narrativo para se adaptar, inovar ou construir um futuro coletivo.</p>
+                <div class="bg-card border-2 border-problem p-6 rounded-lg shadow-xl w-full md:w-3/4 lg:w-1/2">
+                    <h4 class="font-bold text-xl text-problem">Estagnação Cultural</h4>
+                    <p class="text-gray-300">A cultura não tem um caminho narrativo para se adaptar, inovar ou construir um futuro coletivo.</p>
                 </div>
             </div>
         </section>
         
         <section id="solutions" class="my-16 md:my-24">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Reforjando a Lenda: O Caminho a Seguir</h2>
-            <p class="text-center max-w-4xl mx-auto mb-12 text-lg text-muted">O lore contém as sementes para um futuro dinâmico. Ao subverter estereótipos e abraçar todo o potencial da cultura, os Norn podem ser revitalizados.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Reforjando a Lenda: O Caminho a Seguir</h2>
+            <p class="text-center max-w-4xl mx-auto mb-12 text-lg text-gray-400">O lore contém as sementes para um futuro dinâmico. Ao subverter estereótipos e abraçar todo o potencial da cultura, os Norn podem ser revitalizados.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                    <div class="text-4xl mb-3 text-primary">🏛️</div>
-                    <h3 class="text-xl font-bold mb-2">Introduzir Fações Culturais</h3>
-                    <p class="text-gray-600">Criar ramificações como uma comunidade erudita adoradora do Corvo ou uma sociedade coletivista de matilha de Lobos para mostrar diversidade interna e criar conflito filosófico.</p>
+                <div class="bg-card p-6 rounded-lg shadow-xl hover:bg-gray-800 transition-colors duration-300">
+                    <div class="text-4xl mb-3 text-accent">🏛️</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Introduzir Fações Culturais</h3>
+                    <p class="text-gray-400">Criar ramificações como uma comunidade erudita adoradora do Corvo ou uma sociedade coletivista de matilha de Lobos para mostrar diversidade interna e criar conflito filosófico.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                    <div class="text-4xl mb-3 text-primary">🛠️</div>
-                    <h3 class="text-xl font-bold mb-2">Expandir "A Lenda"</h3>
-                    <p class="text-gray-600">Adicionar missões e sistemas que celebrem caminhos não-combatentes para a glória, como artesanato lendário, descoberta histórica ou contação de histórias.</p>
+                <div class="bg-card p-6 rounded-lg shadow-xl hover:bg-gray-800 transition-colors duration-300">
+                    <div class="text-4xl mb-3 text-accent">🛠️</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Expandir "A Lenda"</h3>
+                    <p class="text-gray-400">Adicionar missões e sistemas que celebrem caminhos não-combatentes para a glória, como artesanato lendário, descoberta histórica ou contação de histórias.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                    <div class="text-4xl mb-3 text-primary">🐾</div>
-                    <h3 class="text-xl font-bold mb-2">Recentralizar o Xamanismo</h3>
-                    <p class="text-gray-600">Reformular as habilidades de metamorfose para torná-las mecanicamente poderosas e narrativamente centrais para a experiência Norn.</p>
+                <div class="bg-card p-6 rounded-lg shadow-xl hover:bg-gray-800 transition-colors duration-300">
+                    <div class="text-4xl mb-3 text-accent">🐾</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Recentralizar o Xamanismo</h3>
+                    <p class="text-gray-400">Reformular as habilidades de metamorfose para torná-las mecanicamente poderosas e narrativamente centrais para a experiência Norn.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                    <div class="text-4xl mb-3 text-primary">🗺️</div>
-                    <h3 class="text-xl font-bold mb-2">Redesenhar a Jornada do Jogador</h3>
-                    <p class="text-gray-600">Corrigir pontos problemáticos como a missão "Apagão" e fazer com que a escolha de um Espírito patrono tenha consequências significativas no jogo e na história.</p>
+                <div class="bg-card p-6 rounded-lg shadow-xl hover:bg-gray-800 transition-colors duration-300">
+                    <div class="text-4xl mb-3 text-accent">🗺️</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Redesenhar a Jornada do Jogador</h3>
+                    <p class="text-gray-400">Corrigir pontos problemáticos como a missão "Apagão" e fazer com que a escolha de um Espírito patrono tenha consequências significativas no jogo e na história.</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                    <div class="text-4xl mb-3 text-primary">⚖️</div>
-                    <h3 class="text-xl font-bold mb-2">Oferecer Escolha Significativa</h3>
-                    <p class="text-gray-600">Permitir que as missões sejam resolvidas de várias maneiras, refletindo as diferentes filosofias dos Grandes Espíritos (ex: força do Urso vs. astúcia do Corvo).</p>
+                <div class="bg-card p-6 rounded-lg shadow-xl hover:bg-gray-800 transition-colors duration-300">
+                    <div class="text-4xl mb-3 text-accent">⚖️</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Oferecer Escolha Significativa</h3>
+                    <p class="text-gray-400">Permitir que as missões sejam resolvidas de várias maneiras, refletindo as diferentes filosofias dos Grandes Espíritos (ex: força do Urso vs. astúcia do Corvo).</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                    <div class="text-4xl mb-3 text-primary">⏳</div>
-                    <h3 class="text-xl font-bold mb-2">Usar o Problema como Enredo</h3>
-                    <p class="text-gray-600">Transformar a própria estagnação cultural em um gancho central da trama, onde o jogador atua como um catalisador para a reinvenção e o progresso cultural.</p>
+                <div class="bg-card p-6 rounded-lg shadow-xl hover:bg-gray-800 transition-colors duration-300">
+                    <div class="text-4xl mb-3 text-accent">⏳</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Usar o Problema como Enredo</h3>
+                    <p class="text-gray-400">Transformar a própria estagnação cultural em um gancho central da trama, onde o jogador atua como um catalisador para a reinvenção e o progresso cultural.</p>
                 </div>
             </div>
         </section>
 
     </main>
     
-    <footer class="text-center p-8 bg-gray-800 text-gray-400">
-        <p class="text-sm">Estudo de Caso: Redesenho Narrativo e UX da Sociedade Norn em Guild Wars 2</p>
-        <p class="text-xs mt-2">Este material foi desenvolvido como parte do meu portfólio de UX e Design Narrativo.</p>
+    <footer class="text-center p-8 bg-black">
+        <p class="text-sm text-gray-500">Estudo de Caso: Redesenho Narrativo e UX da Sociedade Norn em Guild Wars 2</p>
+        <p class="text-xs mt-2 text-gray-600">Propriedade Intelectual de Willian Perpétuo Busch. Desenvolvido como parte do portfólio de UX e Design Narrativo.</p>
     </footer>
 
 <script>
@@ -189,13 +190,13 @@
                     label: 'Popularidade Geral dos Jogadores',
                     data: [35, 20, 18, 15, 12],
                     backgroundColor: [
-                        '#6c757d',
-                        '#6c757d',
-                        '#6c757d',
-                        '#6c757d',
-                        '#007bff'
+                        '#444444',
+                        '#444444',
+                        '#444444',
+                        '#444444',
+                        '#8A2BE2' // Cyberpunk Violet
                     ],
-                    borderColor: '#f8f9fa',
+                    borderColor: '#1a1a1a',
                     borderWidth: 2
                 }]
             },
@@ -206,7 +207,7 @@
                 scales: {
                     y: {
                         ticks: {
-                            color: '#f8f9fa',
+                            color: '#cccccc',
                             font: {
                                 size: 14,
                                 weight: 'bold'
@@ -218,15 +219,15 @@
                     },
                     x: {
                         ticks: {
-                            color: '#f8f9fa'
+                            color: '#cccccc'
                         },
                          grid: {
-                            color: 'rgba(248, 249, 250, 0.2)'
+                            color: 'rgba(255, 255, 255, 0.1)'
                         },
                         title: {
                             display: true,
                             text: 'Percentagem da Base de Jogadores (%)',
-                            color: '#f8f9fa'
+                            color: '#cccccc'
                         }
                     }
                 },
@@ -235,7 +236,11 @@
                         display: false
                     },
                     tooltip: {
-                        backgroundColor: '#212529',
+                        backgroundColor: '#0a0a0a',
+                        titleColor: '#ffffff',
+                        bodyColor: '#cccccc',
+                        borderColor: '#8A2BE2',
+                        borderWidth: 1,
                         titleFont: {
                             size: 16
                         },
