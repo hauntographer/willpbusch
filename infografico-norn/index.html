@@ -18,6 +18,10 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8f9fa; /* Light Grey */
             color: #212529; /* Dark Grey */
+            /* Desativa a seleção de texto */
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Sintaxe Padrão */
         }
         .text-primary { color: #0056b3; }
         .bg-primary-dark { background-color: #2c3e50; }
@@ -155,96 +159,114 @@
     </main>
     
     <footer class="text-center p-8 bg-gray-800 text-gray-400">
-        <p>Este infográfico é baseado no estudo de caso: "O Fim da Lenda?"</p>
+        <p class="text-sm">Estudo de Caso: Redesenho Narrativo e UX da Sociedade Norn em Guild Wars 2</p>
+        <p class="text-xs mt-2">Este material foi desenvolvido como parte do meu portfólio de UX e Design Narrativo.</p>
     </footer>
 
 <script>
-    const ctx = document.getElementById('racePopularityChart').getContext('2d');
-    const racePopularityChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Humano', 'Charr', 'Sylvari', 'Asura', 'Norn'],
-            datasets: [{
-                label: 'Popularidade Geral dos Jogadores',
-                data: [35, 20, 18, 15, 12],
-                backgroundColor: [
-                    '#6c757d',
-                    '#6c757d',
-                    '#6c757d',
-                    '#6c757d',
-                    '#007bff'
-                ],
-                borderColor: '#f8f9fa',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    ticks: {
-                        color: '#f8f9fa',
-                        font: {
-                            size: 14,
-                            weight: 'bold'
-                        }
-                    },
-                    grid: {
-                        display: false
-                    }
-                },
-                x: {
-                    ticks: {
-                        color: '#f8f9fa'
-                    },
-                     grid: {
-                        color: 'rgba(248, 249, 250, 0.2)'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Percentagem da Base de Jogadores (%)',
-                        color: '#f8f9fa'
-                    }
-                }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Desativa o menu de contexto (botão direito)
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Desativa a ação de copiar
+        document.addEventListener('copy', event => {
+            event.preventDefault();
+            return false;
+        });
+
+        // Desativa a ação de cortar
+        document.addEventListener('cut', event => {
+            event.preventDefault();
+            return false;
+        });
+
+        const ctx = document.getElementById('racePopularityChart').getContext('2d');
+        const racePopularityChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Humano', 'Charr', 'Sylvari', 'Asura', 'Norn'],
+                datasets: [{
+                    label: 'Popularidade Geral dos Jogadores',
+                    data: [35, 20, 18, 15, 12],
+                    backgroundColor: [
+                        '#6c757d',
+                        '#6c757d',
+                        '#6c757d',
+                        '#6c757d',
+                        '#007bff'
+                    ],
+                    borderColor: '#f8f9fa',
+                    borderWidth: 2
+                }]
             },
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    backgroundColor: '#212529',
-                    titleFont: {
-                        size: 16
-                    },
-                    bodyFont: {
-                        size: 14
-                    },
-                    callbacks: {
-                        title: function(tooltipItems) {
-                            const item = tooltipItems[0];
-                            let label = item.chart.data.labels[item.dataIndex];
-                            if (Array.isArray(label)) {
-                              return label.join(' ');
-                            } else {
-                              return label;
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        ticks: {
+                            color: '#f8f9fa',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
                             }
                         },
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
+                        grid: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#f8f9fa'
+                        },
+                         grid: {
+                            color: 'rgba(248, 249, 250, 0.2)'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Percentagem da Base de Jogadores (%)',
+                            color: '#f8f9fa'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#212529',
+                        titleFont: {
+                            size: 16
+                        },
+                        bodyFont: {
+                            size: 14
+                        },
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            },
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.x !== null) {
+                                    label += context.parsed.x + '%';
+                                }
+                                return label;
                             }
-                            if (context.parsed.x !== null) {
-                                label += context.parsed.x + '%';
-                            }
-                            return label;
                         }
                     }
                 }
             }
-        }
+        });
     });
 </script>
 
