@@ -47,7 +47,7 @@
       totem: null,
       humano: false
     };
-    let seguraTimeout; // Variável para o timer do Gom Jabbar
+    let seguraTimeout;
 
     // Desabilitar copiar e menu de contexto
     document.addEventListener('contextmenu', event => event.preventDefault());
@@ -56,17 +56,19 @@
         return false;
     });
 
-
     function mostrarTela(id) {
       telas.forEach(t => {
         const el = document.getElementById(t);
-        el.classList.remove("active");
+        if (el) el.classList.remove("active");
       });
-      document.getElementById(id).classList.add("active");
+      const proximaTela = document.getElementById(id);
+      if (proximaTela) proximaTela.classList.add("active");
     }
 
     function atualizarPainel() {
-        document.getElementById("tela5").innerHTML = `
+        const painel = document.getElementById("tela5");
+        if (!painel) return;
+        painel.innerHTML = `
         <h2 class="text-2xl font-semibold text-cyan-300 mb-4">Painel de Jornada</h2>
         <ul class="space-y-2 text-slate-300">
           <li>✓ Nome Cerimonial aceito: <strong>${progresso.nome || '[não registrado]'}</strong></li>
@@ -79,38 +81,61 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
+      // --- Tela 1 ---
       document.getElementById("tela1").innerHTML = `
         <h1 class="text-3xl md:text-4xl font-bold text-amber-500">Rituais de Ingresso</h1>
         <p class="text-slate-400">Digite seu nome cerimonial para iniciar a jornada.</p>
         <input type="text" id="nome" placeholder="Ex: Muad'Dib" class="px-4 py-2 rounded bg-slate-800 text-white w-full max-w-xs text-center border border-amber-400 focus:outline-none">
-        <button onclick="iniciarRitual()" class="px-6 py-2 bg-amber-500 text-black rounded hover:bg-amber-400 transition">Iniciar Ritual</button>
+        <button id="btnIniciarRitual" class="px-6 py-2 bg-amber-500 text-black rounded hover:bg-amber-400 transition">Iniciar Ritual</button>
       `;
+      document.getElementById("btnIniciarRitual").addEventListener("click", iniciarRitual);
+      document.getElementById("nome").addEventListener("keyup", (event) => {
+        if (event.key === 'Enter') iniciarRitual();
+      });
 
+      // --- Tela 2 ---
       document.getElementById("tela2").innerHTML = `
         <h2 class="text-2xl font-semibold">Prova do Gom Jabbar</h2>
         <p class="text-slate-400">Mantenha o botão pressionado para provar sua humanidade.</p>
-        <button id="botaoGom" onmousedown="segurar()" onmouseup="liberar()" onmouseleave="liberar()" class="px-8 py-4 bg-red-600 rounded text-white">Manter Pressionado</button>
+        <button id="botaoGom" class="px-8 py-4 bg-red-600 rounded text-white select-none">Manter Pressionado</button>
         <div id="mensagemGom" class="text-green-400 hidden">Você sobreviveu. É humano.</div>
       `;
+      const botaoGom = document.getElementById("botaoGom");
+      // Eventos de Mouse
+      botaoGom.addEventListener("mousedown", iniciarTesteGomJabbar);
+      botaoGom.addEventListener("mouseup", pararTesteGomJabbar);
+      botaoGom.addEventListener("mouseleave", pararTesteGomJabbar);
+      // Eventos de Toque
+      botaoGom.addEventListener("touchstart", iniciarTesteGomJabbar);
+      botaoGom.addEventListener("touchend", pararTesteGomJabbar);
+      botaoGom.addEventListener("touchcancel", pararTesteGomJabbar);
 
+      // --- Tela 3 ---
       document.getElementById("tela3").innerHTML = `
         <h2 class="text-2xl font-semibold text-emerald-400">Escolha Seu Totem</h2>
         <p class="text-slate-400">Selecione a linhagem simbólica que guiará sua jornada.</p>
         <div class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4">
-          <button onclick="escolherTotem('Fremen')" class="px-4 py-2 bg-blue-700 rounded">Água (Fremen)</button>
-          <button onclick="escolherTotem('Bene')" class="px-4 py-2 bg-purple-700 rounded">Voz (Bene Gesserit)</button>
-          <button onclick="escolherTotem('Imperial')" class="px-4 py-2 bg-yellow-600 text-black rounded">Spice (Imperial)</button>
+          <button data-totem="Fremen" class="px-4 py-2 bg-blue-700 rounded totem-btn">Água (Fremen)</button>
+          <button data-totem="Bene" class="px-4 py-2 bg-purple-700 rounded totem-btn">Voz (Bene Gesserit)</button>
+          <button data-totem="Imperial" class="px-4 py-2 bg-yellow-600 text-black rounded totem-btn">Spice (Imperial)</button>
         </div>
         <div id="totemConfirmado" class="text-green-300 mt-4"></div>
-        <button id="btnProsseguirTotem" onclick="mostrarTela4()" class="mt-4 px-6 py-2 bg-emerald-500 rounded text-black opacity-50 cursor-not-allowed" disabled>Prosseguir</button>
+        <button id="btnProsseguirTotem" class="mt-4 px-6 py-2 bg-emerald-500 rounded text-black opacity-50 cursor-not-allowed" disabled>Prosseguir</button>
       `;
+      document.querySelectorAll('.totem-btn').forEach(button => {
+        button.addEventListener('click', () => escolherTotem(button.dataset.totem));
+      });
+      document.getElementById('btnProsseguirTotem').addEventListener('click', mostrarTela4);
 
+
+      // --- Tela 4 ---
       document.getElementById("tela4").innerHTML = `
         <h2 class="text-2xl font-semibold text-amber-400">Nomeação Cerimonial</h2>
         <p id="nomeFinal" class="text-xl text-white"></p>
         <p class="text-slate-400">Você agora é reconhecido como portador de identidade simbólica. Compartilhe sua ascensão.</p>
-        <button onclick="mostrarTela('tela5')" class="px-6 py-2 bg-amber-500 rounded text-black">Avançar para Painel</button>
+        <button id="btnAvancarPainel" class="px-6 py-2 bg-amber-500 rounded text-black">Avançar para Painel</button>
       `;
+      document.getElementById('btnAvancarPainel').addEventListener('click', () => mostrarTela('tela5'));
 
       atualizarPainel();
     });
@@ -127,16 +152,19 @@
       }
     }
 
-    function segurar() {
+    function iniciarTesteGomJabbar(event) {
+      event.preventDefault(); // Impede comportamento padrão (ex: zoom, seleção)
+      document.getElementById("mensagemGom").classList.add("hidden");
       seguraTimeout = setTimeout(() => {
         document.getElementById("mensagemGom").classList.remove("hidden");
         progresso.humano = true;
         atualizarPainel();
-        setTimeout(() => mostrarTela("tela3"), 1000); // Atraso para ler a mensagem
+        setTimeout(() => mostrarTela("tela3"), 1200);
       }, 2500);
     }
 
-    function liberar() {
+    function pararTesteGomJabbar(event) {
+      event.preventDefault();
       clearTimeout(seguraTimeout);
     }
 
