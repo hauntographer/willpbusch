@@ -7,134 +7,154 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-    body { font-family: 'Inter', sans-serif; }
-    /* Adiciona uma transição suave para as seções */
-    section {
-      transition: opacity 0.5s ease-in-out;
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-user-select: none; /* Safari */
+      -ms-user-select: none;     /* IE 10+ */
+      user-select: none;         /* Padrão */
     }
-    .hidden {
-      display: none;
+    section {
+      transition: all 0.6s ease-in-out;
       opacity: 0;
+      transform: translateY(20px);
+      display: none;
+    }
+    section.active {
+      opacity: 1;
+      transform: translateY(0);
+      display: block;
     }
   </style>
 </head>
 <body class="bg-black text-white">
-  
-  <div class="min-h-screen flex flex-col justify-center items-center p-8">
+  <div class="min-h-screen flex flex-col justify-center items-center p-4 md:p-8">
 
-    <section id="tela1" class="space-y-6 text-center">
-      <h1 class="text-3xl md:text-4xl font-bold text-amber-500">Rituais de Ingresso</h1>
-      <p class="text-slate-400">Digite seu nome cerimonial para iniciar a jornada.</p>
-      <input type="text" id="nome" placeholder="Ex: Muad'Dib" class="px-4 py-2 rounded bg-slate-800 text-white w-64 text-center border border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-300">
-      <button onclick="iniciarRitual()" class="px-6 py-2 bg-amber-500 text-black rounded hover:bg-amber-400 transition">Iniciar Ritual</button>
-    </section>
-
-    <section id="tela2" class="hidden text-center space-y-6">
-      <h2 class="text-2xl font-semibold">Prova do Gom Jabbar</h2>
-      <p class="text-slate-400">Mantenha o botão pressionado para provar sua humanidade.</p>
-      <div id="progressoGomContainer" class="w-64 h-4 bg-slate-700 rounded-full mx-auto overflow-hidden">
-        <div id="progressoGomBarra" class="h-full bg-red-600 transition-all duration-200" style="width: 0%;"></div>
-      </div>
-      <button id="botaoGom" onmousedown="segurar()" onmouseup="liberar()" onmouseleave="liberar()" class="px-8 py-4 bg-slate-800 border border-red-500 rounded text-white select-none">Manter Pressionado</button>
-      <p id="mensagemFalhaGom" class="text-red-500 hidden">Você é um animal! Tente novamente.</p>
-    </section>
-
-    <section id="tela3" class="hidden text-center space-y-6">
-      <h2 class="text-2xl font-semibold text-emerald-400">Escolha Seu Totem</h2>
-      <p id="mensagemBoasVindas" class="text-slate-400">Você sobreviveu. É humano, <span id="nomeDisplay" class="font-bold text-amber-400"></span>. Escolha sua linhagem.</p>
-      <div id="botoesTotem" class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-        <button onclick="escolherTotem('Fremen', this)" class="px-4 py-2 bg-blue-700 rounded transition hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">Água (Fremen)</button>
-        <button onclick="escolherTotem('Bene Gesserit', this)" class="px-4 py-2 bg-purple-700 rounded transition hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400">Voz (Bene Gesserit)</button>
-        <button onclick="escolherTotem('Imperial', this)" class="px-4 py-2 bg-yellow-600 text-black rounded transition hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300">Spice (Imperial)</button>
-      </div>
-      <div id="totemConfirmado" class="text-green-300 h-6"></div>
-    </section>
-
+    <section id="tela1" class="active space-y-6 text-center"></section>
+    <section id="tela2" class="space-y-6 text-center"></section>
+    <section id="tela3" class="space-y-6 text-center"></section>
+    <section id="tela4" class="space-y-6 text-center"></section>
+    <section id="tela5" class="space-y-6 text-left max-w-3xl"></section>
   </div>
 
-  <footer class="text-center py-4">
-    <p class="text-xs text-slate-500">&copy; 2025 Willian Perpetuo Busch. Todos os direitos reservados.</p>
-    <p class="text-xs text-slate-500">Parte do meu portfólio.</p>
+  <footer class="fixed bottom-0 left-0 w-full text-center text-xs text-slate-600 p-4">
+    Propriedade intelectual de Willian Perpetuo Busch. Parte do meu portfólio.
   </footer>
 
   <script>
-    // Variáveis globais para o estado do ritual
-    let ritualTimer;
-    let nomeCerimonial = '';
+    const telas = ["tela1", "tela2", "tela3", "tela4", "tela5"];
+    const progresso = {
+      nome: null,
+      totem: null,
+      humano: false
+    };
+    let seguraTimeout; // Variável para o timer do Gom Jabbar
 
-    function mudarTela(origemId, destinoId) {
-        document.getElementById(origemId).classList.add('hidden');
-        document.getElementById(destinoId).classList.remove('hidden');
+    // Desabilitar copiar e menu de contexto
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('copy', event => {
+        event.preventDefault();
+        return false;
+    });
+
+
+    function mostrarTela(id) {
+      telas.forEach(t => {
+        const el = document.getElementById(t);
+        el.classList.remove("active");
+      });
+      document.getElementById(id).classList.add("active");
     }
 
+    function atualizarPainel() {
+        document.getElementById("tela5").innerHTML = `
+        <h2 class="text-2xl font-semibold text-cyan-300 mb-4">Painel de Jornada</h2>
+        <ul class="space-y-2 text-slate-300">
+          <li>✓ Nome Cerimonial aceito: <strong>${progresso.nome || '[não registrado]'}</strong></li>
+          <li>✓ Prova do Gom Jabbar superada: <strong>${progresso.humano ? 'Sim' : 'Não'}</strong></li>
+          <li>✓ Totem simbólico escolhido: <strong>${progresso.totem || '[não selecionado]'}</strong></li>
+          <li>✓ Nomeação pública registrada</li>
+          <li>⟳ Jornada continua com novos desafios (em construção)</li>
+        </ul>
+      `;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("tela1").innerHTML = `
+        <h1 class="text-3xl md:text-4xl font-bold text-amber-500">Rituais de Ingresso</h1>
+        <p class="text-slate-400">Digite seu nome cerimonial para iniciar a jornada.</p>
+        <input type="text" id="nome" placeholder="Ex: Muad'Dib" class="px-4 py-2 rounded bg-slate-800 text-white w-full max-w-xs text-center border border-amber-400 focus:outline-none">
+        <button onclick="iniciarRitual()" class="px-6 py-2 bg-amber-500 text-black rounded hover:bg-amber-400 transition">Iniciar Ritual</button>
+      `;
+
+      document.getElementById("tela2").innerHTML = `
+        <h2 class="text-2xl font-semibold">Prova do Gom Jabbar</h2>
+        <p class="text-slate-400">Mantenha o botão pressionado para provar sua humanidade.</p>
+        <button id="botaoGom" onmousedown="segurar()" onmouseup="liberar()" onmouseleave="liberar()" class="px-8 py-4 bg-red-600 rounded text-white">Manter Pressionado</button>
+        <div id="mensagemGom" class="text-green-400 hidden">Você sobreviveu. É humano.</div>
+      `;
+
+      document.getElementById("tela3").innerHTML = `
+        <h2 class="text-2xl font-semibold text-emerald-400">Escolha Seu Totem</h2>
+        <p class="text-slate-400">Selecione a linhagem simbólica que guiará sua jornada.</p>
+        <div class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <button onclick="escolherTotem('Fremen')" class="px-4 py-2 bg-blue-700 rounded">Água (Fremen)</button>
+          <button onclick="escolherTotem('Bene')" class="px-4 py-2 bg-purple-700 rounded">Voz (Bene Gesserit)</button>
+          <button onclick="escolherTotem('Imperial')" class="px-4 py-2 bg-yellow-600 text-black rounded">Spice (Imperial)</button>
+        </div>
+        <div id="totemConfirmado" class="text-green-300 mt-4"></div>
+        <button id="btnProsseguirTotem" onclick="mostrarTela4()" class="mt-4 px-6 py-2 bg-emerald-500 rounded text-black opacity-50 cursor-not-allowed" disabled>Prosseguir</button>
+      `;
+
+      document.getElementById("tela4").innerHTML = `
+        <h2 class="text-2xl font-semibold text-amber-400">Nomeação Cerimonial</h2>
+        <p id="nomeFinal" class="text-xl text-white"></p>
+        <p class="text-slate-400">Você agora é reconhecido como portador de identidade simbólica. Compartilhe sua ascensão.</p>
+        <button onclick="mostrarTela('tela5')" class="px-6 py-2 bg-amber-500 rounded text-black">Avançar para Painel</button>
+      `;
+
+      atualizarPainel();
+    });
+
     function iniciarRitual() {
-        const nomeInput = document.getElementById('nome');
-        if (nomeInput.value.trim()) {
-            nomeCerimonial = nomeInput.value.trim();
-            mudarTela('tela1', 'tela2');
-        } else {
-            // Adiciona um feedback visual se o nome estiver vazio
-            nomeInput.focus();
-            nomeInput.classList.add('border-red-500');
-            setTimeout(() => nomeInput.classList.remove('border-red-500'), 1500);
-        }
+      const nomeInput = document.getElementById("nome");
+      const nome = nomeInput.value;
+      if (nome.trim()) {
+        progresso.nome = nome.trim();
+        atualizarPainel();
+        mostrarTela("tela2");
+      } else {
+        nomeInput.focus();
+      }
     }
 
     function segurar() {
-        const tempoNecessario = 2500; // 2.5 segundos
-        const barraProgresso = document.getElementById('progressoGomBarra');
-        const botao = document.getElementById('botaoGom');
-
-        // Reseta a falha ao tentar de novo
-        document.getElementById('mensagemFalhaGom').classList.add('hidden');
-        botao.classList.remove('border-green-500');
-        botao.classList.add('border-red-500');
-
-        barraProgresso.style.transition = `width ${tempoNecessario}ms linear`;
-        barraProgresso.style.width = '100%';
-
-        ritualTimer = setTimeout(() => {
-            // Sucesso
-            document.getElementById('nomeDisplay').innerText = nomeCerimonial;
-            botao.classList.add('border-green-500');
-            botao.innerText = "Humanidade Provada";
-            // Espera um pouco para mostrar a tela seguinte
-            setTimeout(() => mudarTela('tela2', 'tela3'), 700);
-        }, tempoNecessario);
+      seguraTimeout = setTimeout(() => {
+        document.getElementById("mensagemGom").classList.remove("hidden");
+        progresso.humano = true;
+        atualizarPainel();
+        setTimeout(() => mostrarTela("tela3"), 1000); // Atraso para ler a mensagem
+      }, 2500);
     }
 
     function liberar() {
-        const barraProgresso = document.getElementById('progressoGomBarra');
-        // Se o timer ainda não completou, significa falha
-        if (ritualTimer) {
-            clearTimeout(ritualTimer);
-            ritualTimer = null; // Limpa a referência
-            
-            // Verifica se a barra não completou para mostrar a mensagem de falha
-            if (barraProgresso.style.width !== '100%') {
-                 document.getElementById('mensagemFalhaGom').classList.remove('hidden');
-            }
-        }
-        // Reseta a barra de progresso
-        barraProgresso.style.transition = 'width 0.1s linear';
-        barraProgresso.style.width = '0%';
+      clearTimeout(seguraTimeout);
     }
 
-    function escolherTotem(totem, botaoClicado) {
-        document.getElementById('totemConfirmado').innerText = `Linhagem selecionada: ${totem}.`;
-        
-        // Remove destaque de outros botões e destaca o selecionado
-        const botoes = document.querySelectorAll('#botoesTotem button');
-        botoes.forEach(btn => {
-            btn.classList.remove('ring-2', 'ring-offset-2', 'ring-offset-black', 'ring-white');
-            btn.disabled = false; // Reativa todos os botões
-        });
-        botaoClicado.classList.add('ring-2', 'ring-offset-2', 'ring-offset-black', 'ring-white');
-        
-        // Opcional: desabilitar botões após a escolha
-        // botoes.forEach(btn => btn.disabled = true);
+    function escolherTotem(totem) {
+      progresso.totem = totem;
+      document.getElementById("totemConfirmado").innerText = `Totem selecionado: ${totem}`;
+      const btnProsseguir = document.getElementById("btnProsseguirTotem");
+      btnProsseguir.disabled = false;
+      btnProsseguir.classList.remove("opacity-50", "cursor-not-allowed");
+      atualizarPainel();
+    }
+
+    function mostrarTela4() {
+      if(progresso.totem) {
+        document.getElementById("nomeFinal").innerText = `${progresso.nome}, o Portador do Totem ${progresso.totem}`;
+        mostrarTela("tela4");
+      }
     }
   </script>
-
 </body>
 </html>
