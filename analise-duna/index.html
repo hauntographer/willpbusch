@@ -11,6 +11,10 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            /* Desabilita a seleção de texto */
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Padrão */
         }
         td {
             vertical-align: middle;
@@ -118,10 +122,16 @@
 
         <!-- Rodapé -->
         <footer class="text-center mt-12 pt-6 border-t border-slate-800">
-            <p class="text-slate-500">Este mapa de jornada aprimorado foca na experiência do usuário, conectando emoções e fricções a insights de design.</p>
+            <p class="text-slate-500">&copy; 2025 Willian Perpetuo Busch. Todos os direitos reservados.</p>
+            <p class="text-slate-600 text-sm mt-1">Este trabalho faz parte do meu portfólio profissional e não pode ser reproduzido sem permissão.</p>
         </footer>
 
     </div>
+
+    <script>
+        // Desabilita o menu de contexto (clique direito) para impedir a cópia
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script>
 
 </body>
 </html>
